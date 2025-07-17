@@ -1,35 +1,121 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <main className="max-w-95 mx-auto min-h-[100vh] pt-40">
+      <section className="bg-[#7a7b88]">
+        <div className="text-4xl p-2 flex justify-end">323</div>
+      </section>
+
+      <section className="grid grid-rows-6 grid-cols-4">
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          AC
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          +/-
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          %
+        </button>
+        <button
+          className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer 
+"
+        >
+          /
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          7
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          8
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          9
+        </button>
+        <button className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer">
+          *
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          4
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          5
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          6
+        </button>
+        <button
+          className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer  
+        "
+        >
+          -
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          1
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          2
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          3
+        </button>
+        <button className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer">
+          +
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer col-span-2 hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          0
+        </button>
+        <button
+          className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
+        active:bg-[#b4b2b2]"
+        >
+          .
+        </button>
+        <button className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer ">
+          =
+        </button>
+      </section>
+    </main>
+  );
 }
 
-export default App
+export default App;
