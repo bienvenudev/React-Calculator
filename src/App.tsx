@@ -21,25 +21,16 @@ function App() {
   // 
 
   const [clickedButton, setClickedButton] = useState('');
-  const [operation, setOperation] = useState('');
-  const [lastAction, setLastAction] = useState('')
-  const [currentResult, setcurrentResult] = useState('');
 
   
-  function handleClick(e) {
-    const clickedBtn = e.target.innerText;
-    if (clickedBtn === '+' || clickedBtn == '-' || clickedBtn == '*' || clickedBtn == '/') {
-      setOperation(clickedBtn)
-    }
-
+  function handleClick(e:React.MouseEvent<HTMLButtonElement>) {
+    const clickedBtn = (e.target as HTMLButtonElement).innerText; // what about here
     if (clickedBtn === '=') {
-      
-      // if (lastAction == '+' || lastAction == '-' || lastAction == '*' || lastAction == '/') setClickedButton([])
       try {
         const currentResult = eval(clickedButton)
-        // setcurrentResult(currentResult)
         setClickedButton(currentResult)
-      } catch (error) {
+      } catch (error) { // and here
+        console.error(error)
         setClickedButton('Error')
       }
 
