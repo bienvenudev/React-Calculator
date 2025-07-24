@@ -77,7 +77,10 @@ function reducer(state: CalculatorState, action: CalculatorAction): CalculatorSt
       }
 
       if (payload.digit === '.' && state.currentOperand == null) {
-        return state
+        return {
+          ...state,
+          currentOperand: "0."
+        }
       }
       if (payload.digit === '.' && state.currentOperand?.includes('.')) {
         return state
@@ -165,17 +168,17 @@ function reducer(state: CalculatorState, action: CalculatorAction): CalculatorSt
     case ACTIONS.NEGATE:
       if (state.currentOperand == null || state.currentOperand == "0") return state;
 
-      if (!state.currentOperand.includes('-')) {
+      if (!state.currentOperand.startsWith('-')) {
         return {
           ...state,
           currentOperand: `-${state.currentOperand}`,
         }
       }
 
-      if (state.currentOperand.includes('-')) {
+      if (state.currentOperand.startsWith('-')) {
         return {
           ...state,
-          currentOperand: `${state.currentOperand.split('-')[1]}`
+          currentOperand: `${state.currentOperand.substring(1)}`
         }
       }
   }
@@ -225,7 +228,7 @@ function formatOperand(operand: string | null): string | undefined {
 
   const [integer, decimal] = operand.split('.');
   if (decimal == null) return INTEGER_FORMATTER.format(parseInt(integer));
-  return `${INTEGER_FORMATTER.format(parseInt(operand))}.${decimal}`
+  return `${INTEGER_FORMATTER.format(parseInt(integer))}.${decimal}`
 }
 
 function App() {
