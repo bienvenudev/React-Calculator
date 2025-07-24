@@ -181,6 +181,7 @@ function reducer(state: CalculatorState, action: CalculatorAction): CalculatorSt
           currentOperand: `${state.currentOperand.substring(1)}`
         }
       }
+      return state;
   }
   return state;
 }
@@ -284,13 +285,13 @@ function App() {
           <DigitButton dispatch={dispatch} digit="." />
           <button
             onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
-            className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer "
+            className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer"
           >
             =
           </button>
           <button
             onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}
-            className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer "
+            className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer"
           >
             DEL
           </button>
