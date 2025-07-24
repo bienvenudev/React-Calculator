@@ -9,9 +9,55 @@ export const ACTIONS = {
   CLEAR: 'clear',
   NEGATE: 'negate',
   EVALUATE: 'evaluate',
+} as const;
+
+interface CalculatorState {
+  currentOperand: string | null;
+  previousOperand: string | null;
+  operation: string | null;
+  overwrite?: boolean;
 }
 
-function reducer(state, { type, payload }) { // 1.explain why type and payload? where does it come from? isn't it part of state too?
+interface AddDigitAction {
+  type: typeof ACTIONS.ADD_DIGIT;
+  payload: { digit: string };
+}
+
+interface ChooseOperationAction {
+  type: typeof ACTIONS.CHOOSE_OPERATION;
+  payload: { operation: string };
+}
+
+interface EvaluateAction {
+  type: typeof ACTIONS.EVALUATE;
+  payload?: undefined;
+}
+
+interface ClearAction {
+  type: typeof ACTIONS.CLEAR;
+  payload?: undefined;
+}
+
+interface DeleteDigitAction {
+  type: typeof ACTIONS.DELETE_DIGIT;
+  payload?: undefined;
+}
+
+interface NegateAction {
+  type: typeof ACTIONS.NEGATE;
+  payload?: undefined;
+}
+
+export type CalculatorAction =
+  | AddDigitAction
+  | ChooseOperationAction
+  | EvaluateAction
+  | ClearAction
+  | DeleteDigitAction
+  | NegateAction
+
+function reducer(state: CalculatorState, action: CalculatorAction): CalculatorState {
+  const { type, payload } = action;
   switch (type) {
     case ACTIONS.ADD_DIGIT:
       if (state.overwrite) {
@@ -33,7 +79,7 @@ function reducer(state, { type, payload }) { // 1.explain why type and payload? 
       if (payload.digit === '.' && state.currentOperand == null) {
         return state
       }
-      if (payload.digit === '.' && state.currentOperand.includes('.')) {
+      if (payload.digit === '.' && state.currentOperand?.includes('.')) {
         return state
       }
 
@@ -84,7 +130,7 @@ function reducer(state, { type, payload }) { // 1.explain why type and payload? 
 
       return {
         ...state,
-        operation: payload.operation,
+        operation: null,
         overwrite: true,
         currentOperand: evaluate(state),
         previousOperand: null
@@ -93,7 +139,7 @@ function reducer(state, { type, payload }) { // 1.explain why type and payload? 
     case ACTIONS.CLEAR:
       return {
         ...state,
-        currentOperand: "0", //2. spread state first, here i wanted to add that if AC is clicked then current should be 0 but suspect it'll cause issues elsewhere (talk about this, I was passing "0" but then i changed to number now it's working) -- (edit: fixed now because the integer formatter removes trailing zeros)
+        currentOperand: "0",
         previousOperand: null,
         operation: null
       }
@@ -113,39 +159,42 @@ function reducer(state, { type, payload }) { // 1.explain why type and payload? 
 
       return {
         ...state,
-        currentOperand: `${state.currentOperand.split('').slice(0, state.currentOperand.split('').length - 1).join('')}`
+        currentOperand: `${state.currentOperand.split('').slice(0, -1).join('')}`
       }
 
     case ACTIONS.NEGATE:
       if (state.currentOperand == null || state.currentOperand == "0") return state;
 
       if (!state.currentOperand.includes('-')) {
-        console.log('No negative detected!')
         return {
           ...state,
-          negateVal: true,
           currentOperand: `-${state.currentOperand}`,
         }
       }
 
       if (state.currentOperand.includes('-')) {
-        console.log('Negative detected now make it positive')
         return {
           ...state,
-          negateVal: false,
           currentOperand: `${state.currentOperand.split('-')[1]}`
         }
       }
   }
+  return state;
 }
 
-function evaluate({ previousOperand, currentOperand, operation }) {
+function evaluate({ previousOperand, currentOperand, operation }: {
+  previousOperand: string | null;
+  currentOperand: string | null;
+  operation: string | null;
+}): string {
+  if (!previousOperand || !currentOperand || !operation) return ""
+
   const prev = parseFloat(previousOperand)
   const current = parseFloat(currentOperand)
 
-  if (prev == null || current == null || operation == null) return state
+  if (isNaN(prev) || isNaN(current)) return ""
 
-  let computation = "";
+  let computation = 0;
 
   switch (operation) {
     case "+":
@@ -159,30 +208,34 @@ function evaluate({ previousOperand, currentOperand, operation }) {
       break
     case "÷":
       computation = prev / current
+      break;
   }
 
   return computation.toString()
 }
 
-const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", { // 3. is there something I can do to make it like normal calculations, like handle big numbers (i suspect adding . and +e as i saw on another calculator -- explain extensively)
-  maximumFractionDigits: 0
+const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
+  maximumFractionDigits: 0,
+  // notation: "compact",
+  // compactDisplay: "long"
 })
 
-function formatOperand(operand) {
+function formatOperand(operand: string | null): string | undefined {
   if (operand == null) return
+
   const [integer, decimal] = operand.split('.');
-  if (decimal == null) return INTEGER_FORMATTER.format(integer);
-  return `${INTEGER_FORMATTER.format(operand)}.${decimal}`
+  if (decimal == null) return INTEGER_FORMATTER.format(parseInt(integer));
+  return `${INTEGER_FORMATTER.format(parseInt(operand))}.${decimal}`
 }
 
 function App() {
-  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(reducer, { currentOperand: "0" })
+  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(reducer, { currentOperand: "0", previousOperand: null, operation: null })
 
   return (
     <main className="max-w-95 mx-auto min-h-[100vh] pt-40">
       <div className="shadow-2xl">
         <section className="bg-[#7a7b88]">
-          <div className="text-2xl p-2 flex justify-end min-h-7">
+          <div className="text-2xl p-2 flex justify-end min-h-7 opacity-80">
             {formatOperand(previousOperand)}{operation}
           </div>
           <div className="text-4xl p-2 flex justify-end min-h-14">
@@ -192,14 +245,14 @@ function App() {
 
         <section className="grid grid-rows-5 grid-cols-4">
           <button
-            onClick={() => dispatch({ type: ACTIONS.CLEAR, payload: {} })}
+            onClick={() => dispatch({ type: ACTIONS.CLEAR })}
             className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
         active:bg-[#b4b2b2]"
           >
             AC
           </button>
           <button
-            onClick={() => dispatch({ type: ACTIONS.NEGATE, payload: {} })}
+            onClick={() => dispatch({ type: ACTIONS.NEGATE })}
             className="h-14 bg-[#dbdbdb] text-black font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer hover:bg-[#c4c2c2] 
         active:bg-[#b4b2b2]"
           >
@@ -227,13 +280,13 @@ function App() {
           <DigitButton dispatch={dispatch} digit="0" />
           <DigitButton dispatch={dispatch} digit="." />
           <button
-            onClick={() => dispatch({ type: ACTIONS.EVALUATE, payload: {} })}
+            onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
             className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer "
           >
             =
           </button>
           <button
-            onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT, payload: {} })}
+            onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}
             className="h-14 bg-[#f38636] text-white hover:bg-[#c77337] active:bg-[#a55e2b] font-bold uppercase text-2xl border-1 border-[#7a7b88] cursor-pointer "
           >
             DEL

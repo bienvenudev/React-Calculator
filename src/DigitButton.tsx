@@ -1,7 +1,11 @@
-import { ACTIONS } from "./App"
+import { ACTIONS, type CalculatorAction } from "./App"
 
-export default function DigitButton({ dispatch, digit }) {
+interface DigitButtonProps {
+  dispatch: React.Dispatch<CalculatorAction>;
+  digit: string;
+}
 
+export default function DigitButton({ dispatch, digit }: DigitButtonProps) {
   return (
     <button
       onClick={() => dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit } })}
